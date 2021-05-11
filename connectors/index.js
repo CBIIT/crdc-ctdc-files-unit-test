@@ -14,6 +14,9 @@ switch (config.source) {
   case config.PUBLIC_S3:
     getUrl = require('./publicS3Connector');
     break;
+  case config.DUMMY:
+    getUrl = require('./dummyConnector');
+    break;
   default:
     console.error(`This shouldn't happen, invalid URL source: '${config.source}'`);
     break;

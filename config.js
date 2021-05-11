@@ -2,13 +2,15 @@ const INDEXD = 'INDEXD';
 const CLOUD_FRONT = 'CLOUD_FRONT';
 const LOCAL = 'LOCAL';
 const PUBLIC_S3 = 'PUBLIC_S3';
+const DUMMY = 'DUMMY';
 
 const config = {
   INDEXD,
   CLOUD_FRONT,
   LOCAL,
   PUBLIC_S3,
-  source: process.env.URL_SRC,
+  DUMMY,
+  source: process.env.URL_SRC || DUMMY,
   be_url: process.env.BACKEND_API,
   version: process.env.VERSION,
   date: process.env.DATE
@@ -22,11 +24,6 @@ if (config.source) {
   throw err;
 }
 
-if (!config.be_url) {
-  const err = 'BACKEND_API is not set!';
-  console.error(err);
-  throw err;
-}
 
 if (!config.version) {
   config.version = 'Version not set'
@@ -35,7 +32,6 @@ if (!config.version) {
 if (!config.date) {
   config.date = new Date();
 }
-
 
 switch (config.source) {
   case INDEXD:
@@ -61,12 +57,19 @@ switch (config.source) {
     if (!config.cf_private_key) {
       throw "CLOUD_FOUNDATION_PRIVATE_KEY is not set!";
     }
+    if (!config.be_url) {
+      const err = 'BACKEND_API is not set!';
+      console.error(err);
+      throw err;
+    }
     break;
   case LOCAL:
     // Todo: add local support here
     break;
   case PUBLIC_S3:
     // Todo: add public S3 support here
+    break;
+  case DUMMY:
     break;
   default:
     const err = `Unknown Source: '${config.source}'`;
