@@ -1,6 +1,6 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
 const fs = require('fs');
 
 const LOG_FOLDER = 'logs';
@@ -9,17 +9,16 @@ if (!fs.existsSync(LOG_FOLDER)) {
 }
 
 // create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream(path.join(__dirname, LOG_FOLDER, 'access.log'), { flags: 'a'})
+const accessLogStream = fs.createWriteStream(path.join(__dirname, LOG_FOLDER, 'access.log'), { flags: 'a'})
 
-var filesRouter = require('./routes/files');
+const filesRouter = require('./routes/files');
 
-var app = express();
+const app = express();
 
 // setup the logger
 app.use(logger('combined', { stream: accessLogStream }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/files', filesRouter);
 
