@@ -1,3 +1,4 @@
+const { removeTrailingSlashes } = require('./utils');
 const INDEXD = 'INDEXD';
 const CLOUD_FRONT = 'CLOUD_FRONT';
 const LOCAL = 'LOCAL';
@@ -11,7 +12,7 @@ const config = {
   PUBLIC_S3,
   DUMMY,
   source: process.env.URL_SRC || DUMMY,
-  be_url: process.env.BACKEND_API,
+  be_url: removeTrailingSlashes(process.env.BACKEND_API),
   version: process.env.VERSION,
   date: process.env.DATE
 };
@@ -35,13 +36,13 @@ if (!config.date) {
 
 switch (config.source) {
   case INDEXD:
-    config.indexdUrl = process.env.INDEXD_URL;
+    config.indexdUrl = removeTrailingSlashes(process.env.INDEXD_URL);
     if (!config.indexdUrl) {
       throw "INDEXD_URL is not set!";
     }
     break;
   case CLOUD_FRONT:
-    config.cf_url = process.env.CLOUD_FRONT_URL;
+    config.cf_url = removeTrailingSlashes(process.env.CLOUD_FRONT_URL);
     config.cf_dist = process.env.CLOUD_FRONT_DIST;
     config.cf_key_id = process.env.CLOUD_FRONT_KEY_ID;
     config.cf_private_key = process.env.CLOUD_FRONT_PRIVATE_KEY;
