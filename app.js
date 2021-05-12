@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const fs = require('fs');
+const cors = require('cors');
+
 
 const LOG_FOLDER = 'logs';
 if (!fs.existsSync(LOG_FOLDER)) {
@@ -14,6 +16,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, LOG_FOLDER, 'a
 const filesRouter = require('./routes/files');
 
 const app = express();
+app.use(cors());
 
 // setup the logger
 app.use(logger('combined', { stream: accessLogStream }))
