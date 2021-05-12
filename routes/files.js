@@ -20,8 +20,8 @@ router.get('/version', function(req, res, next) {
 
 /* GET file's location based on fileId. */
 router.get('/:fileId', async function(req, res, next) {
+  const fileId = req.params.fileId;
   try {
-    const fileId = req.params.fileId;
     res.send(await getURL(fileId));
   } catch (e) {
     console.error(e);
@@ -29,7 +29,11 @@ router.get('/:fileId', async function(req, res, next) {
     if (e.statusCode) {
       status = e.statusCode;
     }
-    res.status(status).send('Error retrieving data from IndexD');
+    let message = `Error retrieving data for ${fileId}`
+    if (e.message) {
+      message = e.message;
+    }
+    res.status(status).send(message);
   }
 });
 

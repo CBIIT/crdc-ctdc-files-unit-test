@@ -12,7 +12,7 @@ const config = {
   PUBLIC_S3,
   DUMMY,
   source: process.env.URL_SRC || DUMMY,
-  be_url: removeTrailingSlashes(process.env.BACKEND_API),
+  backendUrl: removeTrailingSlashes(process.env.BACKEND_API),
   version: process.env.VERSION,
   date: process.env.DATE
 };
@@ -36,29 +36,30 @@ if (!config.date) {
 
 switch (config.source) {
   case INDEXD:
-    config.indexdUrl = removeTrailingSlashes(process.env.INDEXD_URL);
-    if (!config.indexdUrl) {
+    config.indexDUrl = removeTrailingSlashes(process.env.INDEXD_URL);
+    if (!config.indexDUrl) {
       throw "INDEXD_URL is not set!";
     }
     break;
   case CLOUD_FRONT:
-    config.cf_url = removeTrailingSlashes(process.env.CLOUD_FRONT_URL);
-    config.cf_dist = process.env.CLOUD_FRONT_DIST;
-    config.cf_key_id = process.env.CLOUD_FRONT_KEY_ID;
-    config.cf_private_key = process.env.CLOUD_FRONT_PRIVATE_KEY;
-    if (!config.cf_url) {
+    config.cfUrl = removeTrailingSlashes(process.env.CLOUD_FRONT_URL);
+    config.cfDist = process.env.CLOUD_FRONT_DIST;
+    config.cfKeyId = process.env.CLOUD_FRONT_KEY_ID;
+    config.cfPrivateKey = process.env.CLOUD_FRONT_PRIVATE_KEY;
+    config.urlExpiresInSeconds = process.env.URL_EXPIRES_IN_SECONDS
+    if (!config.cfUrl) {
       throw "CLOUD_FOUNDATION_URL is not set!";
     }
-    if (!config.cf_dist) {
+    if (!config.cfDist) {
       throw "CLOUD_FOUNDATION_DIST is not set!";
     }
-    if (!config.cf_key_id) {
+    if (!config.cfKeyId) {
       throw "CLOUD_FOUNDATION_KEY_ID is not set!";
     }
-    if (!config.cf_private_key) {
+    if (!config.cfPrivateKey) {
       throw "CLOUD_FOUNDATION_PRIVATE_KEY is not set!";
     }
-    if (!config.be_url) {
+    if (!config.backendUrl) {
       const err = 'BACKEND_API is not set!';
       console.error(err);
       throw err;
