@@ -1,4 +1,6 @@
 const { removeTrailingSlashes } = require('./utils');
+const fs = require('fs');
+
 const INDEXD = 'INDEXD';
 const CLOUD_FRONT = 'CLOUD_FRONT';
 const LOCAL = 'LOCAL';
@@ -12,7 +14,7 @@ const config = {
   PUBLIC_S3,
   DUMMY,
   source: process.env.URL_SRC || DUMMY,
-  backendUrl: removeTrailingSlashes(process.env.BACKEND_API),
+  backendUrl: removeTrailingSlashes(process.env.BACKEND_URL),
   version: process.env.VERSION,
   date: process.env.DATE
 };
@@ -34,6 +36,10 @@ if (!config.date) {
   config.date = new Date();
 }
 
+function readPrivateKey(keyPath) {
+  return fs.readFileSync(keyPath, 'utf8');
+}
+
 switch (config.source) {
   case INDEXD:
     config.indexDUrl = removeTrailingSlashes(process.env.INDEXD_URL);
@@ -42,25 +48,21 @@ switch (config.source) {
     }
     break;
   case CLOUD_FRONT:
-    config.cfUrl = removeTrailingSlashes(process.env.CLOUD_FRONT_URL);
-    config.cfDist = process.env.CLOUD_FRONT_DIST;
-    config.cfKeyId = process.env.CLOUD_FRONT_KEY_ID;
-    config.cfPrivateKey = process.env.CLOUD_FRONT_PRIVATE_KEY;
+    config.cfUrl = removeTrailingSlashes(process.env.CF_URL);
+    config.cfKeyPairId = process.env.CF_KEY_PAIR_ID;
+    config.cfPrivateKey = readPrivateKey(process.env.CF_PRIVATE_KEY);
     config.urlExpiresInSeconds = process.env.URL_EXPIRES_IN_SECONDS
     if (!config.cfUrl) {
-      throw "CLOUD_FOUNDATION_URL is not set!";
+      throw "CF_URL is not set!";
     }
-    if (!config.cfDist) {
-      throw "CLOUD_FOUNDATION_DIST is not set!";
-    }
-    if (!config.cfKeyId) {
-      throw "CLOUD_FOUNDATION_KEY_ID is not set!";
+    if (!config.cfKeyPairId) {
+      throw "CF_KEY_PAIR_ID is not set!";
     }
     if (!config.cfPrivateKey) {
-      throw "CLOUD_FOUNDATION_PRIVATE_KEY is not set!";
+      throw "CF_PRIVATE_KEY is not set!";
     }
     if (!config.backendUrl) {
-      const err = 'BACKEND_API is not set!';
+      const err = 'BACKEND_URL is not set!';
       console.error(err);
       throw err;
     }
