@@ -1,32 +1,11 @@
 const config = require('../config');
-const bent = require('bent');
 const AWS = require('aws-sdk');
 
 const DEFAULT_EXPIRATION_SECONDS = 60 * 60 * 24; // 24 hours
 
 const signer = new AWS.CloudFront.Signer(config.cfKeyPairId, config.cfPrivateKey);
 
-const queryBackend = bent('POST', 'json');
-
-async function getFileLocation(file_id) {
-  const result = await queryBackend(config.backendUrl, {
-    query: `{ 
-      file (file_id: "${file_id}") {
-        file_location
-      } 
-    }`
-  });
-  if (result && result.data && result.data.file) {
-    if (result.data.file.length !== 0) {
-      return result.data.file[0].file_location;
-    } else {
-      throw {statusCode: 404, message: 'File not found in database'}
-    }
-  } else {
-    throw {statusCode: 400, message: 'Query database failed'}
-  }
-
-}
+const getFileLocation = require('../model');
 
 function getExpiration() {
   const expiresInSeconds = config.urlExpiresInSeconds || DEFAULT_EXPIRATION_SECONDS;

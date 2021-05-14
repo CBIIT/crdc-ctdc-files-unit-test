@@ -6,27 +6,27 @@ const CLOUD_FRONT = 'CLOUD_FRONT';
 const LOCAL = 'LOCAL';
 const PUBLIC_S3 = 'PUBLIC_S3';
 const DUMMY = 'DUMMY';
+const ICDC = 'ICDC';
+const BENTO = 'BENTO';
 
 const config = {
-  INDEXD,
-  CLOUD_FRONT,
-  LOCAL,
-  PUBLIC_S3,
-  DUMMY,
-  source: process.env.URL_SRC || DUMMY,
+  projectNames: {
+    ICDC,
+    BENTO
+  },
+  sourceNames: {
+    INDEXD,
+    CLOUD_FRONT,
+    LOCAL,
+    PUBLIC_S3,
+    DUMMY,
+  },
+  source: (process.env.URL_SRC || DUMMY).toUpperCase(),
   backendUrl: removeTrailingSlashes(process.env.BACKEND_URL),
   version: process.env.VERSION,
-  date: process.env.DATE
+  date: process.env.DATE,
+  project: (process.env.PROJECT || BENTO).toUpperCase()
 };
-
-if (config.source) {
-  config.source = config.source.toUpperCase();
-} else {
-  const err = 'URL_SRC is not set!';
-  console.error(err);
-  throw err;
-}
-
 
 if (!config.version) {
   config.version = 'Version not set'
@@ -62,9 +62,7 @@ switch (config.source) {
       throw "CF_PRIVATE_KEY is not set!";
     }
     if (!config.backendUrl) {
-      const err = 'BACKEND_URL is not set!';
-      console.error(err);
-      throw err;
+      throw 'BACKEND_URL is not set!';
     }
     break;
   case LOCAL:
@@ -76,9 +74,7 @@ switch (config.source) {
   case DUMMY:
     break;
   default:
-    const err = `Unknown Source: '${config.source}'`;
-    console.error(err);
-    throw err;
+    throw `Unknown Source: '${config.source}'`;
 }
 
 module.exports = config;
