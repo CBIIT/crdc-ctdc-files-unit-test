@@ -50,7 +50,7 @@ switch (config.source) {
   case CLOUD_FRONT:
     config.cfUrl = removeTrailingSlashes(process.env.CF_URL);
     config.cfKeyPairId = process.env.CF_KEY_PAIR_ID;
-    config.cfPrivateKey = readPrivateKey(process.env.CF_PRIVATE_KEY);
+    config.cfPrivateKey = process.env.CF_PRIVATE_KEY;
     config.urlExpiresInSeconds = process.env.URL_EXPIRES_IN_SECONDS
     if (!config.cfUrl) {
       throw "CF_URL is not set!";
