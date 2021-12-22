@@ -8,11 +8,15 @@ const PUBLIC_S3 = 'PUBLIC_S3';
 const DUMMY = 'DUMMY';
 const ICDC = 'ICDC';
 const BENTO = 'BENTO';
+const GMB = 'GMB';
+const C3DC = 'C3DC';
 
 const config = {
   projectNames: {
     ICDC,
-    BENTO
+    BENTO,
+    GMB,
+    C3DC
   },
   sourceNames: {
     INDEXD,

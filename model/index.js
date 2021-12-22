@@ -11,6 +11,12 @@ switch (config.project) {
   case config.projectNames.BENTO:
     query = require('./bento');
     break;
+  case config.projectNames.GMB:
+    query = require('./gmb');
+    break;
+  case config.projectNames.C3DC:
+    query = require('./c3dc');
+    break;
   default:
     throw `Unknown project "${config.project}"`;
 }

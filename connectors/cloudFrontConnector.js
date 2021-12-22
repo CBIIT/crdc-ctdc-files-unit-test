@@ -13,6 +13,10 @@ function getExpiration() {
 }
 
 function transformToCloudFrontUrl(file_location) {
+  if (!file_location || file_location.length === 0) {
+    logger.error("File location retrieved from database is empty!");
+  }
+
   const url = new URL(file_location);
   const newUrl = new URL(url.pathname, config.cfUrl);
   return newUrl.toString();
