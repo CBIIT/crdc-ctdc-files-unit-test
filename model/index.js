@@ -3,19 +3,19 @@ const bent = require('bent');
 
 const queryBackend = bent('POST', 'json');
 
-let query;
+let model;
 switch (config.project) {
   case config.projectNames.ICDC:
-    query = require('./icdc');
+    model = require('./icdc');
     break;
   case config.projectNames.BENTO:
-    query = require('./bento');
+    model = require('./bento');
     break;
   case config.projectNames.GMB:
-    query = require('./gmb');
+    model = require('./gmb');
     break;
   case config.projectNames.C3DC:
-    query = require('./c3dc');
+    model = require('./c3dc');
     break;
   default:
     throw `Unknown project "${config.project}"`;
@@ -23,21 +23,22 @@ switch (config.project) {
 
 module.exports = async function getFileLocation(file_id) {
   const result = await queryBackend(config.backendUrl, {
-    query: query,
+    query: model.query,
     variables: {
       file_id
     }
   });
-  if (result && result.data && result.data.file) {
-    if (result.data.file.length !== 0) {
-      return result.data.file[0].file_location;
+  if (result && result.data) {
+    const location = model.getLocation(result.data);
+    if (location) {
+      return location;
     } else {
       throw {statusCode: 404, message: 'File not found in database'}
     }
   } else {
     let message = 'Query database failed';
-    if (result && result.error) {
-      message = result.error.toString();
+    if (result && result.errors) {
+      message = result.errors.reduce((message, msg) => message ? `${message}\n${msg.message}` : msg.message, '');
     }
     throw {statusCode: 400, message }
   }

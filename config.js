@@ -26,6 +26,7 @@ const config = {
     DUMMY,
   },
   source: (process.env.URL_SRC || DUMMY).toUpperCase(),
+  fake: process.env.FAKE ? (process.env.FAKE.toLowerCase() === 'true') : false, // This is used to fake CloudFront call locally
   backendUrl: removeTrailingSlashes(process.env.BACKEND_URL),
   version: process.env.VERSION,
   date: process.env.DATE,
