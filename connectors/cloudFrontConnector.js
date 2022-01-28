@@ -1,6 +1,7 @@
 const config = require('../config');
 const AWS = require('aws-sdk');
 
+
 const DEFAULT_EXPIRATION_SECONDS = 60 * 60 * 24; // 24 hours
 
 const signer = new AWS.CloudFront.Signer(config.cfKeyPairId, config.cfPrivateKey);
@@ -13,12 +14,19 @@ function getExpiration() {
 }
 
 function transformToCloudFrontUrl(file_location) {
+  if (!file_location || file_location.length === 0) {
+    console.error("File location retrieved from database is empty!");
+  }
+
   const url = new URL(file_location);
   const newUrl = new URL(url.pathname, config.cfUrl);
   return newUrl.toString();
 }
 
 async function getSignedURL(file_location) {
+  if (config.fake) {
+    return file_location;
+  }
   const signedUrl = signer.getSignedUrl({
     url: transformToCloudFrontUrl(file_location),
     expires: getExpiration()

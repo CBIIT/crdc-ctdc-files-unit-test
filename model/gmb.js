@@ -1,13 +1,13 @@
 module.exports = {
     query: `query file($file_id: String){  
-        file (uuid: $file_id)
+        fILE (UUID: $file_id)
         {
-            file_location
+            FILE_LOCATION
         }
     }`,
     getLocation: data => {
-        if (data && data.file && data.file.length > 0) {
-            return data.file[0].file_location;
+        if (data && data.fILE && data.fILE.length > 0) {
+            return data.fILE[0].FILE_LOCATION;
         } else {
             console.error("File not found in DB");
             return null;

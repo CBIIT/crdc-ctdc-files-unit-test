@@ -8,11 +8,15 @@ const PUBLIC_S3 = 'PUBLIC_S3';
 const DUMMY = 'DUMMY';
 const ICDC = 'ICDC';
 const BENTO = 'BENTO';
+const GMB = 'GMB';
+const C3DC = 'C3DC';
 
 const config = {
   projectNames: {
     ICDC,
-    BENTO
+    BENTO,
+    GMB,
+    C3DC
   },
   sourceNames: {
     INDEXD,
@@ -22,6 +26,7 @@ const config = {
     DUMMY,
   },
   source: (process.env.URL_SRC || DUMMY).toUpperCase(),
+  fake: process.env.FAKE ? (process.env.FAKE.toLowerCase() === 'true') : false, // This is used to fake CloudFront call locally
   backendUrl: removeTrailingSlashes(process.env.BACKEND_URL),
   version: process.env.VERSION,
   date: process.env.DATE,
