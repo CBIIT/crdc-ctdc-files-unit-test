@@ -4,6 +4,7 @@ const path = require('path');
 const logger = require('morgan');
 const fs = require('fs');
 const cors = require('cors');
+const auth = require('./utils/auth');
 
 
 const LOG_FOLDER = 'logs';
@@ -24,6 +25,7 @@ app.use(logger('combined', { stream: accessLogStream }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(auth());
 app.use('/api/files', filesRouter);
 
 // catch 404 and forward to error handler
