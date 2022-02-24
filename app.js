@@ -25,7 +25,7 @@ app.use(logger('combined', { stream: accessLogStream }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(auth());
+app.use(auth(["/api/files/ping", "/api/files/version"]));
 app.use('/api/files', filesRouter);
 
 // catch 404 and forward to error handler

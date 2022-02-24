@@ -1,9 +1,12 @@
 const config = require('../config');
 const bent = require('bent');
 
-module.exports = function () {
+module.exports = function (exceptions) {
     if (config.authUrl) {
         return async function(req, res, next) {
+            if (exceptions && exceptions.includes(req.path)) {
+                next();
+            }
             try {
                 const cookie = req.headers.cookie;
                 if (cookie) {
