@@ -9,9 +9,12 @@ Following environmental variables are needed
 - DATE : build date
 - URL_SRC : source for signed URL, can be one of INDEXD, CLOUD_FRONT, LOCAL, PUBLIC_S3 or DUMMY (default)
 - BACKEND_URL : URL of bento GraphQL backend
-- AUTH_URL : URL of bento-auth service
+- AUTH_ENABLED: set to "true" to enable authentication
 - PROJECT : can be one of ICDC, BENTO, GMB or C3DC 
 - FAKE : set to "true" will bypass CLOUD_FRONT calls, it's only used for local testing
+
+Following variable is only needed when AUTH_ENABLED is set to true
+- AUTH_URL : URL of bento-auth service
 
 Following variables are only needed for specific source
 

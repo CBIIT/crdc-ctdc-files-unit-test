@@ -28,6 +28,7 @@ const config = {
   source: (process.env.URL_SRC || DUMMY).toUpperCase(),
   fake: process.env.FAKE ? (process.env.FAKE.toLowerCase() === 'true') : false, // This is used to fake CloudFront call locally
   backendUrl: removeTrailingSlashes(process.env.BACKEND_URL),
+  authEnabled: process.env.AUTH_ENABLED ? process.env.AUTH_ENABLED.toLowerCase() === 'true' : false,
   authUrl: process.env.AUTH_URL ? (process.env.AUTH_URL.toLowerCase() === 'null' ? null : process.env.AUTH_URL) : null,
   version: process.env.VERSION,
   date: process.env.DATE,
@@ -40,6 +41,11 @@ if (!config.version) {
 
 if (!config.date) {
   config.date = new Date();
+}
+
+// Make sure when authentication is enabled, authUrl is also set
+if (config.authEnabled && (!config.authUrl || !config.authUrl.startsWith('http'))) {
+  throw `Invalid auth URL: ${config.authUrl}`;
 }
 
 function readPrivateKey(keyPath) {

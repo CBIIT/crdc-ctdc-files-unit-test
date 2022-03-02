@@ -2,7 +2,7 @@ const config = require('../config');
 const bent = require('bent');
 
 module.exports = function (exceptions) {
-    if (config.authUrl) {
+    if (config.authEnabled) {
         return async function(req, res, next) {
             if (exceptions && exceptions.includes(req.path)) {
                 next();
