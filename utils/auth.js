@@ -5,7 +5,7 @@ module.exports = function (exceptions) {
     if (config.authEnabled) {
         return async function(req, res, next) {
             if (exceptions && exceptions.includes(req.path)) {
-                next();
+                return next();
             }
             try {
                 const cookie = req.headers.cookie;
@@ -21,12 +21,12 @@ module.exports = function (exceptions) {
                 return res.status(403).send('Not authenticated!');
             } catch (e) {
                 console.log(e);
-                res.status(500).send(e);
+                return res.status(500).send(e);
             }
         }
     } else {
         return function (req, res, next) {
-            next();
+            return next();
         }
     }
 }
