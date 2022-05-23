@@ -1,10 +1,13 @@
 const { removeTrailingSlashes } = require('./utils');
 const fs = require('fs');
 
+const DEFAULT_EXPIRATION_SECONDS = 60 * 60 * 24; // 24 hours
+
 const INDEXD = 'INDEXD';
 const CLOUD_FRONT = 'CLOUD_FRONT';
 const LOCAL = 'LOCAL';
 const PUBLIC_S3 = 'PUBLIC_S3';
+const SIGNED_S3 = 'SIGNED_S3';
 const DUMMY = 'DUMMY';
 const ICDC = 'ICDC';
 const BENTO = 'BENTO';
@@ -23,6 +26,7 @@ const config = {
     CLOUD_FRONT,
     LOCAL,
     PUBLIC_S3,
+    SIGNED_S3,
     DUMMY,
   },
   source: (process.env.URL_SRC || DUMMY).toUpperCase(),
@@ -63,7 +67,7 @@ switch (config.source) {
     config.cfUrl = removeTrailingSlashes(process.env.CF_URL);
     config.cfKeyPairId = process.env.CF_KEY_PAIR_ID;
     config.cfPrivateKey = process.env.CF_PRIVATE_KEY;
-    config.urlExpiresInSeconds = process.env.URL_EXPIRES_IN_SECONDS
+    config.urlExpiresInSeconds = process.env.URL_EXPIRES_IN_SECONDS || DEFAULT_EXPIRATION_SECONDS
     if (!config.cfUrl) {
       throw "CF_URL is not set!";
     }
@@ -76,6 +80,10 @@ switch (config.source) {
     if (!config.backendUrl) {
       throw 'BACKEND_URL is not set!';
     }
+    break;
+  case SIGNED_S3:
+    // config.region = process.env.REGION || 'us-east-1';
+    config.urlExpiresInSeconds = process.env.URL_EXPIRES_IN_SECONDS || DEFAULT_EXPIRATION_SECONDS
     break;
   case LOCAL:
     // Todo: add local support here
