@@ -13,13 +13,15 @@ const ICDC = 'ICDC';
 const BENTO = 'BENTO';
 const GMB = 'GMB';
 const C3DC = 'C3DC';
+const CTDC = 'CTDC';
 
 const config = {
   projectNames: {
     ICDC,
     BENTO,
     GMB,
-    C3DC
+    C3DC,
+    CTDC
   },
   sourceNames: {
     INDEXD,
