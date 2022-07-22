@@ -2,10 +2,11 @@ const newrelic = require('newrelic');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
+const {createSession} = require("./services/session");
 const fs = require('fs');
 const cors = require('cors');
 const auth = require('./utils/auth');
-
+const config = require("./config");
 
 const LOG_FOLDER = 'logs';
 if (!fs.existsSync(LOG_FOLDER)) {
@@ -18,6 +19,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, LOG_FOLDER, 'a
 const filesRouter = require('./routes/files');
 
 const app = express();
+if (config.mysqlSessionEnabled) app.use(createSession());
 app.use(cors());
 
 // setup the logger
