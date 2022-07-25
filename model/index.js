@@ -24,29 +24,6 @@ switch (config.project) {
     throw `Unknown project "${config.project}"`;
 }
 
-module.exports = async function getFileLocation(file_id) {
-  const result = await queryBackend(config.backendUrl, {
-    query: model.query,
-    variables: {
-      file_id
-    }
-  });
-  if (result && result.data) {
-    const location = model.getLocation(result.data);
-    if (location) {
-      return location;
-    } else {
-      throw {statusCode: 404, message: 'File not found in database'}
-    }
-  } else {
-    let message = 'Query database failed';
-    if (result && result.errors) {
-      message = result.errors.reduce((message, msg) => message ? `${message}\n${msg.message}` : msg.message, '');
-    }
-    throw {statusCode: 400, message }
-  }
-}
-
 // Calling this API will return file information
 // callback parameter will trigger function for the desired field
 // ex) await getFileInfo(file_id, model.getLocation); getting location field
