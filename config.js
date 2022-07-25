@@ -1,6 +1,7 @@
 const { removeTrailingSlashes } = require('./utils');
 const fs = require('fs');
-
+const dotenv = require('dotenv')
+dotenv.config();
 const DEFAULT_EXPIRATION_SECONDS = 60 * 60 * 24; // 24 hours
 
 const INDEXD = 'INDEXD';
