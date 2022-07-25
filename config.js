@@ -1,7 +1,6 @@
 const { removeTrailingSlashes } = require('./utils');
 const fs = require('fs');
-const dotenv = require('dotenv');
-dotenv.config();
+
 const DEFAULT_EXPIRATION_SECONDS = 60 * 60 * 24; // 24 hours
 
 const INDEXD = 'INDEXD';
@@ -40,8 +39,16 @@ const config = {
   authUrl: process.env.AUTH_URL ? (process.env.AUTH_URL.toLowerCase() === 'null' ? null : process.env.AUTH_URL) : null,
   version: process.env.VERSION,
   date: process.env.DATE,
+  project: (process.env.PROJECT || BENTO).toUpperCase(),
+  // MySQL Session
   mysqlSessionEnabled: process.env.MYSQL_SESSION_ENABLED ? process.env.MYSQL_SESSION_ENABLED.toLowerCase() === 'true' : false,
-  project: (process.env.PROJECT || BENTO).toUpperCase()
+  mysql_host: process.env.MYSQL_HOST,
+  mysql_port: process.env.MYSQL_PORT,
+  mysql_user: process.env.MYSQL_USER,
+  mysql_password: process.env.MYSQL_PASSWORD,
+  mysql_database: process.env.MYSQL_DATABASE,
+  session_timeout: process.env.SESSION_TIMEOUT ? parseInt(process.env.SESSION_TIMEOUT) : 30 * 60,  // 30 minutes
+  cookie_secret: process.env.COOKIE_SECRET,
 };
 
 if (!config.version) {
