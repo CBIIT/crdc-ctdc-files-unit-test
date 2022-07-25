@@ -46,3 +46,38 @@ module.exports = async function getFileLocation(file_id) {
     throw {statusCode: 400, message }
   }
 }
+
+// Calling this API will return file information
+// callback parameter will trigger function for the desired field
+// ex) await getFileInfo(file_id, model.getLocation); getting location field
+const getFileInfo = async (file_id, fieldCallback) => {
+  const result = await queryBackend(config.backendUrl, {
+    query: model.query,
+    variables: {
+      file_id
+    }
+  });
+  if (result && result.data) {
+    const location = fieldCallback(result.data);
+    if (location) {
+      return location;
+    } else {
+      throw {statusCode: 404, message: 'File not found in database'}
+    }
+  } else {
+    let message = 'Query database failed';
+    if (result && result.errors) {
+      message = result.errors.reduce((message, msg) => message ? `${message}\n${msg.message}` : msg.message, '');
+    }
+    throw {statusCode: 400, message}
+  }
+}
+
+module.exports = {
+  async getFileLocation(file_id) {
+    return await getFileInfo(file_id, model.getLocation);
+  },
+  async getFileACL(file_id) {
+    return await getFileInfo(file_id, model.getAcl);
+  }
+}
