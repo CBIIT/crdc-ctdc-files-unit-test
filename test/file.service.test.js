@@ -1,4 +1,4 @@
-const {getFileField, authFileACL} = require("../services/file-auth");
+const {getFileField, isAuthorizedAccess} = require("../services/file-auth");
 const {getFileACL} = require("../model");
 const {strToArr} = require("../utils/string-util");
 jest.mock('../model');
@@ -23,7 +23,7 @@ describe('File Service Test', () => {
         ];
 
         for (let t of test) {
-            const result = authFileACL(t.userAcl, t.fileAcl);
+            const result = isAuthorizedAccess(t.userAcl, t.fileAcl);
             expect(result).toBe(t.result);
         }
     });

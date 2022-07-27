@@ -14,7 +14,7 @@ const getFileField = (data, callBack)=> {
 // compares user acl array with file acl array
 // If a user has at least one acl value in a file acl array, it returns true
 const OPEN = 'open';
-function authFileACL(userAclArr, fileAclArr) {
+function isAuthorizedAccess(userAclArr, fileAclArr) {
     if (!fileAclArr || !userAclArr) return false;
     const aclSet = new Set();
     for (let fileAcl of fileAclArr) {
@@ -30,5 +30,5 @@ function authFileACL(userAclArr, fileAclArr) {
 
 module.exports = {
     getFileField,
-    authFileACL
+    isAuthorizedAccess
 };

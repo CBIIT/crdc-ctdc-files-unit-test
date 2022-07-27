@@ -1,5 +1,5 @@
 const config = require('../config');
-const {authFileACL} = require("../services/file-auth");
+const {isAuthorizedAccess} = require("../services/file-auth");
 const {getFileACL} = require("../model");
 const {strToArr} = require("./string-util");
 const {isAdminUser} = require("../services/user-auth");
@@ -21,7 +21,7 @@ module.exports = function (exceptions) {
                     // Open all file access to Admin user
                     if (isAdminUser(req.session.userInfo)) return next();
                     // Inspect file accessibility
-                    if (authFileACL(userAcl, strToArr(fileAcl))) return next();
+                    if (isAuthorizedAccess(userAcl, strToArr(fileAcl))) return next();
                 }
                 return res.status(403).send('Not authenticated!');
             } catch (e) {
