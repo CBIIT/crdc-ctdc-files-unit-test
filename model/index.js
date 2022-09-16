@@ -27,13 +27,13 @@ switch (config.project) {
 // Calling this API will return file information
 // callback parameter will trigger function for the desired field
 // ex) await getFileInfo(file_id, model.getLocation); getting location field
-const getFileInfo = async (file_id, fieldCallback) => {
+const getFileInfo = async (file_id, fieldCallback, cookie) => {
   const result = await queryBackend(config.backendUrl, {
     query: model.query,
     variables: {
       file_id
     }
-  });
+  }, (cookie) ? {Cookie: cookie} : {});
   if (result && result.data) {
     const location = fieldCallback(result.data);
     if (location) {
@@ -54,7 +54,7 @@ module.exports = {
   async getFileLocation(file_id) {
     return await getFileInfo(file_id, model.getLocation);
   },
-  async getFileACL(file_id) {
-    return await getFileInfo(file_id, model.getAcl);
+  async getFileACL(file_id, cookie) {
+    return await getFileInfo(file_id, model.getAcl, cookie);
   }
 }
