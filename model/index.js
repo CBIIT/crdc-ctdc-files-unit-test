@@ -51,8 +51,8 @@ const getFileInfo = async (file_id, fieldCallback, cookie) => {
 }
 
 module.exports = {
-  async getFileLocation(file_id) {
-    return await getFileInfo(file_id, model.getLocation);
+  async getFileLocation(file_id, cookie) {
+    return await getFileInfo(file_id, model.getLocation, cookie);
   },
   async getFileACL(file_id, cookie) {
     return await getFileInfo(file_id, model.getAcl, cookie);
