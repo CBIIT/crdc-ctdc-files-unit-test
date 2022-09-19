@@ -29,8 +29,8 @@ async function getSignedURL(fileLocation) {
     return await getSignedUrl(client, command, { expiresIn: config.urlExpiresInSeconds });
 }
 
-module.exports = async function (fileId) {
-    const location = await getFileLocation(fileId);
+module.exports = async function (fileId, cookie) {
+    const location = await getFileLocation(fileId, cookie);
     if (!location) {
         throw `File location not found for file: ${fileId}`
     }

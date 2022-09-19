@@ -48,7 +48,7 @@ const config = {
   mysql_user: process.env.MYSQL_USER,
   mysql_password: process.env.MYSQL_PASSWORD,
   mysql_database: process.env.MYSQL_DATABASE,
-  session_timeout: process.env.SESSION_TIMEOUT ? parseInt(process.env.SESSION_TIMEOUT) : 30 * 60,  // 30 minutes
+  session_timeout: process.env.SESSION_TIMEOUT ? parseInt(process.env.SESSION_TIMEOUT) * 1000 : 1000 * 30 * 60,  // 30 minutes
   cookie_secret: process.env.COOKIE_SECRET,
 };
 

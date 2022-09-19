@@ -16,7 +16,8 @@ module.exports = function (exceptions) {
                     if (!config.authorizationEnabled) return next();
                     // Search file ACL from Bento-backend API
                     const fileId = req.path.replace("/api/files/", "");
-                    const fileAcl = await getFileACL(fileId);
+                    const cookie = req.headers.cookie;
+                    const fileAcl = await getFileACL(fileId, cookie);
                     const userAcl = req.session.userInfo.acl ? req.session.userInfo.acl : [];
                     // Open all file access to Admin user
                     if (isAdminUser(req.session.userInfo)) return next();
