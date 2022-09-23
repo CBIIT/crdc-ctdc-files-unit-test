@@ -22,7 +22,8 @@ router.get('/version', function(req, res, next) {
 router.get('/:fileId', async function(req, res, next) {
   const fileId = req.params.fileId;
   try {
-    res.send(await getURL(fileId));
+    const cookie = req.headers.cookie;
+    res.send(await getURL(fileId, cookie));
   } catch (e) {
     console.error(e);
     let status = 400;

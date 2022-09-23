@@ -34,8 +34,8 @@ async function getSignedURL(file_location) {
   return signedUrl;
 }
 
-module.exports = async function (file_id) {
-  const location = await getFileLocation(file_id);
+module.exports = async function (file_id, cookie) {
+  const location = await getFileLocation(file_id, cookie);
   return await getSignedURL(location);
 }
 
