@@ -1,11 +1,12 @@
+const { getLocation } = require('./c3dc'); // Adjust the path to match the actual file location
+const { getFileField } = require("../services/file-auth");
+
 jest.mock('../services/file-auth', () => ({
   getFileField: jest.fn()
 }));
 
-const c3dc = require('./c3dc'); // Adjust the path to match the location of your c3dc module
-const { getFileField } = require("../services/file-auth");
 
-describe('c3dc Tests', () => {
+describe('c3dc getLocation Function Tests', () => {
   const mockData = {
     file: [
       {
@@ -20,7 +21,7 @@ describe('c3dc Tests', () => {
   });
 
   test('getLocation returns the FILE_LOCATION', () => {
-    const location = c3dc.getLocation(mockData);
+    const location = getLocation(mockData);
 
     expect(location).toBe('s3://bucketName/path/to/file');
     expect(getFileField).toHaveBeenCalledWith(mockData, expect.any(Function));

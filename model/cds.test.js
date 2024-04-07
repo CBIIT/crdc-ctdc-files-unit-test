@@ -2,10 +2,12 @@ jest.mock('../services/file-auth', () => ({
   getFileField: jest.fn()
 }));
 
-const cds = require('./cds'); // Adjust the path to match the location of your cds module
-const { getFileField } = require("../services/file-auth");
 
-describe('cds getLocation Function Tests', () => {
+const { getFileField } = require("../services/file-auth");
+const { query, getLocation } = require("./cds");
+
+
+describe('icdc Tests', () => {
   const mockData = {
     file: [
       {
@@ -19,8 +21,8 @@ describe('cds getLocation Function Tests', () => {
     getFileField.mockImplementation((data, callback) => callback(data));
   });
 
-  test('getLocation extracts and returns the file_url_in_cds', () => {
-    const fileURL = cds.getLocation(mockData);
+  test('getLocation retrieves the file_url_in_cds from the data', () => {
+    const fileURL = getLocation(mockData);
 
     expect(fileURL).toBe('https://cds.example.com/path/to/file');
     expect(getFileField).toHaveBeenCalledWith(mockData, expect.any(Function));

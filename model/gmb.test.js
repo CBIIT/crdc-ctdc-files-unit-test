@@ -1,7 +1,13 @@
-describe('File Data Util Tests', () => {
-  const gmb = require('./gmb'); // Adjust the path to match the location of your module
 
-  test('getLocation returns the FILE_LOCATION when data is valid', () => {
+jest.mock('../services/file-auth', () => ({
+  getFileField: jest.fn()
+}));
+
+
+const { getLocation } = require('./gmb');
+
+describe('getLocation function', () => {
+  test('returns the file location when data is valid', () => {
     const mockData = {
       fILE: [
         {
@@ -10,24 +16,24 @@ describe('File Data Util Tests', () => {
       ]
     };
 
-    const location = gmb.getLocation(mockData);
+    const location = getLocation(mockData);
 
     expect(location).toBe('https://example.com/path/to/file');
   });
 
-  test('getLocation logs error and returns null when file is not found', () => {
+  test('logs error and returns null when file is not found', () => {
     console.error = jest.fn();
 
-    const location = gmb.getLocation({fILE: []});
+    const location = getLocation({ fILE: [] });
 
     expect(console.error).toHaveBeenCalledWith("File not found in DB");
     expect(location).toBeNull();
   });
 
-  test('getLocation returns null with undefined data', () => {
+  test('returns null with undefined data', () => {
     console.error = jest.fn();
 
-    const location = gmb.getLocation(undefined);
+    const location = getLocation(undefined);
 
     expect(console.error).toHaveBeenCalledWith("File not found in DB");
     expect(location).toBeNull();

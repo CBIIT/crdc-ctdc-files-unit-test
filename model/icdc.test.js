@@ -26,9 +26,5 @@ describe('icdc Tests', () => {
     expect(getFileField).toHaveBeenCalledWith(mockData, expect.any(Function));
   });
 
-  test('getFileField callback function retrieves file_location correctly', () => {
-    const result = getFileField(mockData, data => data.file[0].file_location);
-
-    expect(result).toBe(mockData.file[0].file_location);
-  });
 });
+
