@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const config = require('../config');
 const getURL = require('../connectors');
-const {storeDownloadEvent} = require("../neo4j/neo4j-operations");
+//const {storeDownloadEvent} = require("../neo4j/neo4j-operations");
 console.log(config);
 
 /* GET ping-ping for health checking. */
@@ -22,11 +22,12 @@ router.get('/version', function(req, res, next) {
 /* GET file's location based on fileId. */
 router.get('/:fileId', async function(req, res, next) {
   const fileId = req.params.fileId;
+  console.log(fileId)
   try {
     const cookie = req.headers.cookie;
-    let response = await getURL(fileId, cookie);
-    await storeDownloadEvent(req.session?.userInfo, fileId);
-    res.send(response);
+    let response = await getURL(fileId, req, res);
+    //await storeDownloadEvent(req.session?.userInfo, fileId);
+     res.status(response.status).send(response.message);
   } catch (e) {
     console.error(e);
     let status = 400;
